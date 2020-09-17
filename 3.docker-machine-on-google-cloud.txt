@@ -1,0 +1,88 @@
+https://codelabs.developers.google.com/codelabs/gcp-infra-cloud-api-infrastructure-automation/index.html#0
+https://docs.docker.com/machine/drivers/gce/
+Create machines on Google Compute Engine. You need a Google account and a project ID. 
+
+Credentials
+
+The Google driver uses Application Default Credentials to get authorization credentials for use in calling Google APIs.
+
+So if docker-machine is used from a GCE host, authentication occurs automatically via the built-in service account. Otherwise, install gcloud and get through the oauth2 process with gcloud auth login.
+
+
+Or, manually download the credentials.json file to the local, and set the GOOGLE_APPLICATION_CREDENTIALS environment variable point to its location, such as:
+
+export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gce-credentials.json
+
+$ gcloud auth login
+$ docker-machine create --driver google --google-project visualzero-demo vm01
+$ docker-machine create --driver google \
+  --google-project visualzero-demo \
+  --google-zone us-central1-a \
+  --google-machine-type f1-micro \
+  vm02
+
+$ docker-machine create --driver google \
+>   --google-project visualzero-demo \
+>   --google-zone us-central1-a \
+>   --google-machine-type f1-micro \
+>   vm02
+Running pre-create checks...
+(vm02) Check that the project exists
+(vm02) Check if the instance already exists
+Creating machine...
+(vm02) Generating SSH Key
+(vm02) Creating host...
+(vm02) Opening firewall ports
+(vm02) Creating instance
+(vm02) Waiting for Instance
+(vm02) Uploading SSH Key
+Waiting for machine to be running, this may take a few minutes...
+Detecting operating system of created instance...
+Waiting for SSH to be available...
+Detecting the provisioner...
+Provisioning with ubuntu(systemd)...
+Installing Docker...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+Checking connection to Docker...
+Docker is up and running!
+To see how to connect your Docker Client to the Docker Engine running on this virtual machine, run: C:\Program Files\Docker Toolbox\docker-machine.exe env vm02
+
+$ docker-machine ls
+NAME         ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER      ERRORS
+default      *        virtualbox   Running   tcp://192.168.99.100:2376           v19.03.12
+dockerhost   -        virtualbox   Running   tcp://192.168.99.101:2376           v19.03.12
+vm01         -        google       Running   tcp://35.225.74.59:2376             v19.03.12
+vm02         -        google       Running   tcp://35.223.220.132:2376           v19.03.13
+
+$ docker-machine env vm02
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://35.223.220.132:2376"
+export DOCKER_CERT_PATH="C:\Users\waynexing\.docker\machine\machines\vm02"
+export DOCKER_MACHINE_NAME="vm02"
+export COMPOSE_CONVERT_WINDOWS_PATHS="true"
+# Run this command to configure your shell:
+# eval $("C:\Program Files\Docker Toolbox\docker-machine.exe" env vm02)
+
+$ docker-machine ssh vm02
+Welcome to Ubuntu 16.04.2 LTS (GNU/Linux 4.10.0-27-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+253 packages can be updated.
+170 updates are security updates.
+
+New release '18.04.5 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+docker-user@vm02:~$
+
+
+

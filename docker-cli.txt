@@ -1,0 +1,78 @@
+Enable nested vt-x/amd-v for Oracle virtualbox...
+C:\>cd Program Files\Oracle\VirtualBox
+
+C:\Program Files\Oracle\VirtualBox>VBoxManage modifyvm ubuntu --nested-hw-virt on
+
+
+#copy docker-machine
+
+curl -L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine && \
+chmod +x /tmp/docker-machine && \
+sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
+
+
+sudo apt-get install virtualbox
+docker-machine kill dockerhost
+docker-machine rm dockerhost
+docker-machine create --driver virtualbox dockerhost
+
+
+ubuntulab@Ubuntulab:~$ docker-machine create --driver virtualbox dockerhost
+Creating CA: /home/ubuntulab/.docker/machine/certs/ca.pem
+Creating client certificate: /home/ubuntulab/.docker/machine/certs/cert.pem
+Running pre-create checks...
+(dockerhost) Image cache directory does not exist, creating it at /home/ubuntulab/.docker/machine/cache...
+(dockerhost) No default Boot2Docker ISO found locally, downloading the latest release...
+(dockerhost) Latest release for github.com/boot2docker/boot2docker is v19.03.12
+(dockerhost) Downloading /home/ubuntulab/.docker/machine/cache/boot2docker.iso from https://github.com/boot2docker/boot2docker/releases/download/v19.03.12/boot2docker.iso...
+(dockerhost) 0%....10%....20%....30%....40%....50%....60%....70%....80%....90%....100%
+Creating machine...
+(dockerhost) Copying /home/ubuntulab/.docker/machine/cache/boot2docker.iso to /home/ubuntulab/.docker/machine/machines/dockerhost/boot2docker.iso...
+(dockerhost) Creating VirtualBox VM...
+(dockerhost) Creating SSH key...
+(dockerhost) Starting the VM...
+(dockerhost) Check network to re-create if needed...
+(dockerhost) Found a new host-only adapter: "vboxnet0"
+(dockerhost) Waiting for an IP...
+Waiting for machine to be running, this may take a few minutes...
+Detecting operating system of created instance...
+Waiting for SSH to be available...
+Detecting the provisioner...
+Provisioning with boot2docker...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+Checking connection to Docker...
+Docker is up and running!
+To see how to connect your Docker Client to the Docker Engine running on this virtual machine, run: docker-machine env dockerhost
+ubuntulab@Ubuntulab:~$
+
+ubuntulab@Ubuntulab:~$ docker-machine env dockerhost
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.100:2376"
+export DOCKER_CERT_PATH="/home/ubuntulab/.docker/machine/machines/dockerhost"
+export DOCKER_MACHINE_NAME="dockerhost"
+# Run this command to configure your shell:
+# eval $(docker-machine env dockerhost)
+ubuntulab@Ubuntulab:~$
+
+ubuntulab@Ubuntulab:~$ docker-machine ls
+NAME         ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER      ERRORS
+dockerhost   *        virtualbox   Running   tcp://192.168.99.100:2376           v19.03.12
+ubuntulab@Ubuntulab:~$
+
+ubuntulab@Ubuntulab:~$ docker-machine ssh dockerhost
+   ( '>')
+  /) TC (\   Core is distributed with ABSOLUTELY NO WARRANTY.
+ (/-_--_-\)           www.tinycorelinux.net
+
+docker@dockerhost:~$
+
+
+
+
+
+
+
+
+

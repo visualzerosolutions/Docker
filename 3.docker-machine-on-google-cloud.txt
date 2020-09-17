@@ -58,7 +58,7 @@ vm02         -        google       Running   tcp://35.223.220.132:2376          
 $ docker-machine env vm02
 export DOCKER_TLS_VERIFY="1"
 export DOCKER_HOST="tcp://35.223.220.132:2376"
-export DOCKER_CERT_PATH="C:\Users\waynexing\.docker\machine\machines\vm02"
+export DOCKER_CERT_PATH="C:\Users\username\.docker\machine\machines\vm02"
 export DOCKER_MACHINE_NAME="vm02"
 export COMPOSE_CONVERT_WINDOWS_PATHS="true"
 # Run this command to configure your shell:

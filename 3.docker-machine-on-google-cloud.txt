@@ -83,5 +83,15 @@ Run 'do-release-upgrade' to upgrade to it.
 
 docker-user@vm02:~$
 
+sudo docker images
+docker pull <image name>
+docker run <image name>
+docker run --name MyContainer -it ubuntu bash
+sudo docker ps -a
+sudo docker stop MyContainer
+docker top <container ID or name>
+docker stats
+sudo docker kill MyContainer
+
 
 

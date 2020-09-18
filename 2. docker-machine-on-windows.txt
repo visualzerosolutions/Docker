@@ -31,11 +31,11 @@ VirtualBox 5.2.20
 
 After installation you can create a docker machine host as below...
 
-docker-machine create --driver virtualbox dockerhost1
+docker-machine create --driver virtualbox dockerhost
 
 To delete docker machine host...
-docker-machine kill dockerhost1
-docker-machine rm dockerhost1
+docker-machine kill dockerhost
+docker-machine rm dockerhost
 
 To list docker machine host...
 docker-machin ls

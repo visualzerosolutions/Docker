@@ -12,6 +12,9 @@ Or, manually download the credentials.json file to the local, and set the GOOGLE
 
 export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gce-credentials.json
 
+for Windows machine, using the following instead:
+set GOOGLE_APPLICATION_CREDENTIALS=$HOME/gce-credentials.json
+
 $ gcloud auth login
 $ docker-machine create --driver google --google-project visualzero-demo vm01
 $ docker-machine create --driver google \
@@ -93,5 +96,104 @@ docker top <container ID or name>
 docker stats
 sudo docker kill MyContainer
 
+sudo docker run --name=Ubuntu_Test ubuntu:18.04
+
+ubuntulab@vm01:~$ sudo docker run --name=Ubuntu_Test ubuntu:18.04
+Unable to find image 'ubuntu:18.04' locally
+18.04: Pulling from library/ubuntu
+5d9821c94847: Pull complete
+a610eae58dfc: Pull complete
+a40e0eb9f140: Pull complete
+Digest: sha256:2f1aaf987e9f4806f076a08b1263f2b81376a54f811bb971434c483bd78eb858
+Status: Downloaded newer image for ubuntu:18.04
+
+
+$ docker-machine env vm01
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://35.225.74.59:2376"
+export DOCKER_CERT_PATH="C:\Users\waynexing\.docker\machine\machines\vm01"
+export DOCKER_MACHINE_NAME="vm01"
+export COMPOSE_CONVERT_WINDOWS_PATHS="true"
+# Run this command to configure your shell:
+# eval $("C:\Program Files\Docker Toolbox\docker-machine.exe" env vm01)
+
+$ ls "C:\Users\waynexing\.docker\machine\machines\vm01"
+ca.pem    config.json  id_rsa.pub  server.pem
+cert.pem  id_rsa       key.pem     server-key.pem
+
+$ eval $("C:\Program Files\Docker Toolbox\docker-machine.exe" env vm01)
+
+$ docker run --name tmp-nginx-container -d nginx
+Unable to find image 'nginx:latest' locally
+latest: Pulling from library/nginx
+d121f8d1c412: Pull complete
+ebd81fc8c071: Pull complete
+655316c160af: Pull complete
+d15953c0e0f8: Pull complete
+2ee525c5c3cc: Pull complete
+Digest: sha256:c628b67d21744fce822d22fdcc0389f6bd763daac23a6b77147d0712ea7102d0
+Status: Downloaded newer image for nginx:latest
+3555ca854f2725a378b41f58fb2d8998e19f07f0bd20e47075db8e5ae5b41d58
+
+$ docker run --name myngixcontainer -d nginx:alpine
+Unable to find image 'nginx:alpine' locally
+alpine: Pulling from library/nginx
+df20fa9351a1: Pull complete
+3db268b1fe8f: Pull complete
+f682f0660e7a: Pull complete
+7eb0e8838bc0: Pull complete
+e8bf1226cc17: Pull complete
+Digest: sha256:a97eb9ecc708c8aa715ccfb5e9338f5456e4b65575daf304f108301f3b497314
+Status: Downloaded newer image for nginx:alpine
+76a23a31b06ad1675f1ceceacfd4843af3df47cdf814e98ed07a260d72267c27
+
+$ docker container ls
+CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS               NAMES
+76a23a31b06a        nginx:alpine        "/docker-entrypoint."   19 seconds ago       Up 17 seconds       80/tcp              myngixcontainer
+3555ca854f27        nginx               "/docker-entrypoint."   About a minute ago   Up About a minute   80/tcp              tmp-nginx-container
+
+$ docker-machine ssh vm01
+Welcome to Ubuntu 18.04.5 LTS (GNU/Linux 4.15.0-117-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+ * Canonical Livepatch is available for installation.
+   - Reduce system reboots and improve kernel security. Activate at:
+     https://ubuntu.com/livepatch
+
+0 packages can be updated.
+0 updates are security updates.
+
+docker-user@vm01:~$ sudo docker container ls
+CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS               NAMES
+76a23a31b06a        nginx:alpine        "/docker-entrypoint.."   About a minute ago   Up About a minute   80/tcp              myngixcontainer
+3555ca854f27        nginx               "/docker-entrypoint.."   2 minutes ago        Up 2 minutes        80/tcp              tmp-nginx-container
+docker-user@vm01:~$
+
+docker-user@vm01:~$ ps aux | grep dockerd
+docker-+  1641  0.0  0.0  13136  1044 pts/1    S+   19:12   0:00 grep --color=auto dockerd
+root      1768  0.0  2.8 836620 107632 ?       Ssl  Sep17   0:15 /usr/bin/dockerd -H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock --storage-driver overlay2 --tlsverify --tlscacert /etc/docker/ca.pem --tlscert /etc/docker/server.pem --tlskey /etc
+/docker/server-key.pem --label provider=google
+docker-user@vm01:~$
+
+$ docker-machine rm vm01
+About to remove vm01
+WARNING: This action will delete both local reference and remote instance.
+Are you sure? (y/n): y
+(vm01) Deleting instance.
+(vm01) Waiting for instance to delete.
+
+$ gcloud compute instances list
+Listed 0 items.
+
+
+Updates are available for some Cloud SDK components.  To install them,
+please run:
+  $ gcloud components update
 
 
